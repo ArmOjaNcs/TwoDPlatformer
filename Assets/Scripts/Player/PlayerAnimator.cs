@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class PlayerAnimationController : MonoBehaviour
+public class PlayerAnimator : MonoBehaviour
 {
     private const string IsMoving = nameof(IsMoving);
     private const string IsDucking = nameof(IsDucking);
@@ -10,7 +10,8 @@ public class PlayerAnimationController : MonoBehaviour
     private const string Hurt = nameof(Hurt);
     private const string IsShooting = nameof(IsShooting);
 
-    [SerializeField] private PlayerController _player;
+    [SerializeField] private InputController _inputController;
+    [SerializeField] private PlayerHitZone _playerHitZone;
 
     private Animator _animator;
 
@@ -21,30 +22,31 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.Moving += OnMoving;
-        _player.Ducking += OnDucking;
-        _player.Jumping += OnJumping;
-        _player.Shooting += OnShooting;
-        _player.Hurt += OnHurt;
+        _inputController.Moving += OnMoving;
+        _inputController.Ducking += OnDucking;
+        _inputController.Jumping += OnJumping;
+        _inputController.Shooting += OnShooting;
+        _playerHitZone.DamageDetected += OnHurt;
     }
 
     private void OnDisable()
     {
-        _player.Moving -= OnMoving;
-        _player.Ducking -= OnDucking;
-        _player.Jumping -= OnJumping;
-        _player.Shooting -= OnShooting;
-        _player.Hurt -= OnHurt;
+        _inputController.Moving -= OnMoving;
+        _inputController.Ducking -= OnDucking;
+        _inputController.Jumping -= OnJumping;
+        _inputController.Shooting -= OnShooting;
+        _playerHitZone.DamageDetected -= OnHurt;
     }
 
-    private void OnHurt()
+    private void OnHurt(int damage = 0)
     {
         _animator.SetTrigger(Hurt);        
     }
 
-    private void OnMoving(bool status)
+    private void OnMoving(float direction)
     {
-        _animator.SetBool(IsMoving, status);
+        bool isMoving = direction != 0 ? true : false; 
+        _animator.SetBool(IsMoving, isMoving);
     }
 
     private void OnDucking(bool status)

@@ -17,11 +17,11 @@ public class PlayerHitZone : MonoBehaviour
         _isCanBeDamaged = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Detected(int damage)
     {
-        if (collision.TryGetComponent(out EnemyBullet bullet) && _isCanBeDamaged)
+        if (_isCanBeDamaged)
         {
-            DamageDetected?.Invoke(bullet.Damage);
+            DamageDetected?.Invoke(damage);
             _isCanBeDamaged = false;
             StartCoroutine(WaitAfterHit());
         }

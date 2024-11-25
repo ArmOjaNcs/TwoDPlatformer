@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private EnemyHitZone _hitZone;
     [SerializeField] private float _speed;
 
-    private readonly int _maxHP = 100;
+    private readonly int _maxHitPoints = 100;
 
     private SpriteRenderer _spriteRenderer;
     private int _indexOfPoint;
@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _hitPoints = _maxHP;
+        _hitPoints = _maxHitPoints;
     }
 
     private void OnEnable()

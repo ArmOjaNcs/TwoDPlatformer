@@ -10,8 +10,6 @@ public class EnemyBullet : MonoBehaviour
     private WaitForSeconds _lifeTime;
     private Vector2 _direction;
 
-    public int Damage => _damage;
-
     private void Start()
     {
         StartCoroutine(BeginLifeTime());
@@ -24,8 +22,11 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerHitZone _))
+        if (collision.TryGetComponent(out PlayerHitZone hitZone))
+        {
+            hitZone.Detected(_damage);
             Destroy(gameObject);
+        }
     }
 
     public void Init(WaitForSeconds lifeTime, Vector2 direction)

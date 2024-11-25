@@ -11,6 +11,11 @@ public class CameraFollower : MonoBehaviour
         Move();
     }
 
+    public void SetOffset(Vector3 offset)
+    {
+        _offset = offset;
+    }
+
     private void Move()
     {
         if(_targetTransform != null)
@@ -20,10 +25,5 @@ public class CameraFollower : MonoBehaviour
 
             transform.position = nextPosition;
         }
-    }
-
-    public void SetOffset(Vector3 offset)
-    {
-        _offset = offset;
     }
 }

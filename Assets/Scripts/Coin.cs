@@ -1,12 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent (typeof(AudioSource))]
-[RequireComponent (typeof(SpriteRenderer))]
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Coin : MonoBehaviour
 {
     private AudioSource _audioSource;
     private SpriteRenderer _spriteRenderer;
+    private WaitForSeconds _wait;
     private bool _isFirstTouch;
 
     private void Awake()
@@ -16,20 +17,25 @@ public class Coin : MonoBehaviour
         _isFirstTouch = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Start()
     {
-        if(collision.TryGetComponent(out PlayerController _) && _isFirstTouch)
-        {
-            _isFirstTouch = false;
-            _audioSource.Play();
-            _spriteRenderer.enabled = false;
-            StartCoroutine(Collecting());
-        }
+        _wait = new WaitForSeconds(_audioSource.clip.length);
+    }
+
+    public void GetCollected()
+    {
+        StartCoroutine(Collecting());
     }
 
     private IEnumerator Collecting()
     {
-        yield return new WaitForSeconds(_audioSource.clip.length);
-        Destroy(gameObject);
+        if (_isFirstTouch)
+        {
+            _isFirstTouch= false;
+            _audioSource.Play();
+            _spriteRenderer.enabled = false;
+            yield return _wait;
+            Destroy(gameObject);
+        }
     }
 }

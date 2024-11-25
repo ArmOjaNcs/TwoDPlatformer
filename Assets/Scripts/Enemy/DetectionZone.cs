@@ -7,7 +7,7 @@ public class DetectionZone : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerController _))
+        if (collision.TryGetComponent(out PlayerMover _))
         {
             Vector3 position = collision.transform.position;
             PlayerInZone?.Invoke(true, position);
@@ -16,7 +16,7 @@ public class DetectionZone : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerController _) == false)
+        if (collision.TryGetComponent(out PlayerMover _) == false)
             PlayerInZone?.Invoke(false, Vector3.zero);
     }
 }

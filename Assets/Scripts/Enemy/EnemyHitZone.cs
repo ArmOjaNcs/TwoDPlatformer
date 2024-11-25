@@ -5,9 +5,8 @@ public class EnemyHitZone : MonoBehaviour
 {
     public event Action<int> DamageDetected;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Detected(int damage)
     {
-        if (collision.TryGetComponent(out Bullet bullet))
-            DamageDetected?.Invoke(bullet.Damage);
+        DamageDetected?.Invoke(damage);
     }
 }

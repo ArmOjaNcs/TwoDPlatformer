@@ -662,6 +662,7 @@ GameObject:
   - component: {fileID: 471073635}
   - component: {fileID: 471073636}
   - component: {fileID: 471073638}
+  - component: {fileID: 471073639}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -4771,6 +4772,18 @@ BuoyancyEffector2D:
   m_FlowAngle: 0
   m_FlowMagnitude: 0
   m_FlowVariation: 0
+--- !u!114 &471073639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471073630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f260e69db32084e8cccd5ca467c27b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &488824658
 GameObject:
   m_ObjectHideFlags: 0
@@ -4873,6 +4886,7 @@ GameObject:
   - component: {fileID: 647224402}
   - component: {fileID: 647224401}
   - component: {fileID: 647224404}
+  - component: {fileID: 647224405}
   m_Layer: 0
   m_Name: Frame
   m_TagString: Untagged
@@ -8443,6 +8457,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03e10156064c9f043855049332588cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &647224405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647224397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f260e69db32084e8cccd5ca467c27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &674139467
@@ -22208,18 +22234,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1373990371091216264, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6833019048759331985, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: 89ee93314f534fe48a569836216de5cc, type: 3}
-    - target: {fileID: 6833019048759331985, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 89ee93314f534fe48a569836216de5cc, type: 3}
-    - target: {fileID: 6833019048759331985, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
-      propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

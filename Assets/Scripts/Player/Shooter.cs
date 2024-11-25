@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent (typeof(AudioSource))]
 public class Shooter : MonoBehaviour
 {
-    [SerializeField] private PlayerController _playerController;
+    [SerializeField] private InputController _inputController;
     [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private Transform[] _shotPoints;
     [SerializeField] private float _delay;
@@ -32,7 +32,7 @@ public class Shooter : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerController.PerformingShot += OnPerformingShot;
+        _inputController.PerformingShot += OnPerformingShot;
     }
 
     private void Update()
@@ -51,17 +51,17 @@ public class Shooter : MonoBehaviour
 
     private void OnDisable()
     {
-        _playerController.PerformingShot -= OnPerformingShot;
+        _inputController.PerformingShot -= OnPerformingShot;
     }
 
-    private void OnPerformingShot(bool status, bool direction, bool isDuck)
+    private void OnPerformingShot(ShotData shotInfo)
     {
-        _isShooting = status;
-        _direction = direction ? _left : _right;
+        _isShooting = shotInfo.IsShooting;
+        _direction = shotInfo.IsRightDirection ? _left : _right;
 
         if (_direction > 0)
-            _currentShotPoint = isDuck ? _shotPoints[_thirdPoint] : _shotPoints[_firstPoint];
+            _currentShotPoint = shotInfo.IsDucking ? _shotPoints[_thirdPoint] : _shotPoints[_firstPoint];
         else if (_direction < 0)
-            _currentShotPoint = isDuck ? _shotPoints[_fourthPoint] : _shotPoints[_secondPoint];
+            _currentShotPoint = shotInfo.IsDucking ? _shotPoints[_fourthPoint] : _shotPoints[_secondPoint];
     }
 }

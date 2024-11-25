@@ -9,8 +9,6 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private WaitForSeconds _lifeTime;
 
-    public int Damage => _damage;
-
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -23,8 +21,11 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out EnemyHitZone _))
+        if(collision.TryGetComponent(out EnemyHitZone hitZone))
+        {
+            hitZone.Detected(_damage);
             Destroy(gameObject);
+        }
     }
 
     public void Init(WaitForSeconds lifeTime)
