@@ -14,12 +14,8 @@ public class Coin : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _isFirstTouch = true;
-    }
-
-    private void Start()
-    {
         _wait = new WaitForSeconds(_audioSource.clip.length);
+        _isFirstTouch = true;
     }
 
     public void GetCollected()
