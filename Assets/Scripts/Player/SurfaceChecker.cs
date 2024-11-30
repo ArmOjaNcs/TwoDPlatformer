@@ -7,21 +7,26 @@ public class SurfaceChecker : MonoBehaviour
     public event Action<bool> CanJump;
     public event Action<bool> CanFallThrough;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Surface _))
+        {
             CanJump?.Invoke(true);
-
-        if (collision.TryGetComponent(out Frame _))
-            CanFallThrough?.Invoke(false);
-        else
             CanFallThrough?.Invoke(true);
-
+        }
+        else if(collision.TryGetComponent(out WaterSurface _))
+        {
+            CanJump?.Invoke(true);
+            CanFallThrough?.Invoke(false);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Surface _))
+        if(collision.TryGetComponent(out Surface _) || collision.TryGetComponent(out WaterSurface _))
+        {
             CanJump?.Invoke(false);
+            CanFallThrough?.Invoke(false);
+        }
     }
 }

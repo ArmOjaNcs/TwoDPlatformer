@@ -41,7 +41,7 @@ public class InputController : MonoBehaviour
 
         Ducking?.Invoke(IsDuck && _direction == 0);
 
-        if(_isCanFallThrough && IsDuck && IsJump)
+        if(_isCanFallThrough && IsDuck && IsJump && _isCanJump)
             FallingThroughPlatform?.Invoke();
 
         Shooting?.Invoke(IsShot);

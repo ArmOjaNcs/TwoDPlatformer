@@ -183,8 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3163a3568b7d148867c696ceda6d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zone: {fileID: 4797567912986267494}
   _enemyBulletPrefab: {fileID: 6365357987087067461, guid: a8b179da42aca884fb2f9b0ffdda5119, type: 3}
+  _enemy: {fileID: 7031821828265707752}
   _delay: 1
   _bulletLifeTime: 2
 --- !u!82 &550114323239619267
@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: 7031821828265707752}
   - component: {fileID: 2067889877007652237}
   - component: {fileID: 4614140776810259127}
+  - component: {fileID: 7338320857315025168}
   m_Layer: 0
   m_Name: CrabEnemy
   m_TagString: Untagged
@@ -415,7 +416,8 @@ MonoBehaviour:
   _points:
   - {fileID: 0}
   - {fileID: 0}
-  _hitZone: {fileID: 2434198732145167486}
+  _patrulZone: {fileID: 0}
+  _detectionZone: {fileID: 4797567912986267494}
   _speed: 0.75
 --- !u!70 &2067889877007652237
 CapsuleCollider2D:
@@ -481,6 +483,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &7338320857315025168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6006307907887430787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2082f0b037a345848b4449311567c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitZone: {fileID: 2434198732145167486}
 --- !u!1 &8189372607022746619
 GameObject:
   m_ObjectHideFlags: 0

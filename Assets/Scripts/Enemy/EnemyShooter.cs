@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent (typeof(AudioSource))]
 public class EnemyShooter : MonoBehaviour
 {
-    [SerializeField] private DetectionZone _zone;
     [SerializeField] private EnemyBullet _enemyBulletPrefab;
+    [SerializeField] private Enemy _enemy;
     [SerializeField] private float _delay;
     [SerializeField] private float _bulletLifeTime;
 
@@ -22,7 +22,7 @@ public class EnemyShooter : MonoBehaviour
 
     private void OnEnable()
     {
-        _zone.PlayerInZone += OnPlayerInZone;
+        _enemy.PlayerInZone += OnPlayerInZone;
     }
 
     private void Update()
@@ -31,7 +31,7 @@ public class EnemyShooter : MonoBehaviour
 
         if( _isShooting && _currentTime > _delay)
         {
-            EnemyBullet enemyBullet = Instantiate(_enemyBulletPrefab, transform.position + (Vector3)_direction, Quaternion.identity);
+            EnemyBullet enemyBullet = Instantiate(_enemyBulletPrefab, transform.position, Quaternion.identity);
             enemyBullet.Init(_lifeTime, _direction);
             _audioSource.Play();
             _currentTime = 0;
@@ -40,12 +40,14 @@ public class EnemyShooter : MonoBehaviour
 
     private void OnDisable()
     {
-        _zone.PlayerInZone -= OnPlayerInZone;
+        _enemy.PlayerInZone -= OnPlayerInZone;
     }
 
-    private void OnPlayerInZone(bool isShooting, Vector3 targetPosition)
+    private void OnPlayerInZone(bool isShooting, IEnemyTarget target)
     {
         _isShooting = isShooting;
-        _direction = (targetPosition - transform.position).normalized;
+
+        if(target != null)
+            _direction = target.Position - transform.position;
     }
 }
