@@ -18,6 +18,11 @@ public class PlayerHitPoints : MonoBehaviour
         _hitZone.DamageDetected += OnDamageDetected;
     }
 
+    private void OnDisable()
+    {
+        _hitZone.DamageDetected -= OnDamageDetected;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out MedPack medPack) && HitPoints < _maxHitPoints)
@@ -29,11 +34,6 @@ public class PlayerHitPoints : MonoBehaviour
 
             medPack.PickUp();
         }
-    }
-
-    private void OnDisable()
-    {
-        _hitZone.DamageDetected -= OnDamageDetected;
     }
 
     private void OnDamageDetected(int damage)

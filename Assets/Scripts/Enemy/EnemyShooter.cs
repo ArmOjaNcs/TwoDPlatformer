@@ -25,6 +25,11 @@ public class EnemyShooter : MonoBehaviour
         _enemy.PlayerInZone += OnPlayerInZone;
     }
 
+    private void OnDisable()
+    {
+        _enemy.PlayerInZone -= OnPlayerInZone;
+    }
+
     private void Update()
     {
         _currentTime += Time.deltaTime;
@@ -38,16 +43,11 @@ public class EnemyShooter : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        _enemy.PlayerInZone -= OnPlayerInZone;
-    }
-
     private void OnPlayerInZone(bool isShooting, IEnemyTarget target)
     {
         _isShooting = isShooting;
 
         if(target != null)
-            _direction = target.Position - transform.position;
+            _direction = (target.Position - transform.position).normalized;
     }
 }

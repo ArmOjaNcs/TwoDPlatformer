@@ -30,16 +30,16 @@ public class PlayerMover : MonoBehaviour, IEnemyTarget
         _inputController.FallingThroughPlatform += OnFallingThrough;
     }
 
-    private void FixedUpdate()
-    {
-        Move();
-    }
-
     private void OnDisable()
     {
         _inputController.Moving -= OnMoving;
         _inputController.Jumping -= OnJumping;
         _inputController.FallingThroughPlatform -= OnFallingThrough;
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
     }
 
     public Vector3 Position => transform.position;

@@ -35,6 +35,11 @@ public class Shooter : MonoBehaviour
         _inputController.PerformingShot += OnPerformingShot;
     }
 
+    private void OnDisable()
+    {
+        _inputController.PerformingShot -= OnPerformingShot;
+    }
+
     private void Update()
     {
         _currentTime += Time.deltaTime;
@@ -47,11 +52,6 @@ public class Shooter : MonoBehaviour
             _audioSource.Play();
             _currentTime = 0;
         }
-    }
-
-    private void OnDisable()
-    {
-        _inputController.PerformingShot -= OnPerformingShot;
     }
 
     private void OnPerformingShot(ShotData shotInfo)

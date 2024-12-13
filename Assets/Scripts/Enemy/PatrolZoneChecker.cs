@@ -5,24 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PatrolZoneChecker : MonoBehaviour
 {
-    [SerializeField] private PatrulZone _patrulZone;
+    [SerializeField] private PatrolZone _patrolZone;
 
     public event Action<bool> EnemyInZone;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PatrulZone patrulZone))
+        if (collision.TryGetComponent(out PatrolZone patrolZone))
         {
-            if (_patrulZone == patrulZone)
+            if (_patrolZone == patrolZone)
                 EnemyInZone?.Invoke(true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PatrulZone patrulZone))
+        if (collision.TryGetComponent(out PatrolZone patrolZone))
         {
-            if (_patrulZone == patrulZone)
+            if (_patrolZone == patrolZone)
                 EnemyInZone?.Invoke(false);
         }
     }

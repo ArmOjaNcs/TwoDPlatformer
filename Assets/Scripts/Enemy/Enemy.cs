@@ -39,19 +39,19 @@ public class Enemy : MonoBehaviour
         _patrolZoneChecker.EnemyInZone += OnEnemyInZone;
     }
 
+    private void OnDisable()
+    {
+        _detectionZone.FoundTarget -= OnFoundTarget;
+        _detectionZone.LostTarget -= OnLostTarget;
+        _patrolZoneChecker.EnemyInZone -= OnEnemyInZone;
+    }
+
     private void Update()
     {
         if (_isPatrolling)
             Patrol();
         else
             HarassPlayer();
-    }
-
-    private void OnDisable()
-    {
-        _detectionZone.FoundTarget -= OnFoundTarget;
-        _detectionZone.LostTarget -= OnLostTarget;
-        _patrolZoneChecker.EnemyInZone -= OnEnemyInZone;
     }
 
     private void OnFoundTarget(IEnemyTarget target)
