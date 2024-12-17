@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class MedPack : MonoBehaviour
 {
-    private readonly int _healingPower = 20;
+    private readonly float _healingPower = 20;
 
     private AudioSource _audioSource;
     private SpriteRenderer _spriteRenderer;
@@ -21,7 +21,7 @@ public class MedPack : MonoBehaviour
         _isFirstTouch = true;
     }
 
-    public int GetHealing()
+    public float GetHealing()
     {
         return _healingPower;
     }

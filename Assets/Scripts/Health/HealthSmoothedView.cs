@@ -1,0 +1,34 @@
+using System.Collections;
+using UnityEngine;
+
+public abstract class HealthSmoothedView : MonoBehaviour
+{
+    [SerializeField] private protected Health Health;
+    [SerializeField] private protected float CurrentSmoothDuration;
+
+    private protected float SmoothDuration;
+    private protected Coroutine Coroutine;
+
+    private void OnEnable()
+    {
+        Health.HealthUpdate += OnHealthUpdate;
+    }
+
+    private void OnDisable()
+    {
+        Health.HealthUpdate -= OnHealthUpdate;
+    }
+
+    private protected virtual IEnumerator UpdateView() 
+    {
+        yield return null;
+    }
+
+    private void OnHealthUpdate()
+    {
+        if (Coroutine != null)
+            StopCoroutine(Coroutine);
+
+        Coroutine = StartCoroutine(UpdateView());
+    }
+}

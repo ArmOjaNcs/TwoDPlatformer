@@ -11,7 +11,7 @@ public class PlayerAnimator : MonoBehaviour
     private const string IsShooting = nameof(IsShooting);
 
     [SerializeField] private InputController _inputController;
-    [SerializeField] private PlayerHitZone _playerHitZone;
+    [SerializeField] private HitZone _hitZone;
 
     private Animator _animator;
 
@@ -26,7 +26,7 @@ public class PlayerAnimator : MonoBehaviour
         _inputController.Ducking += OnDucking;
         _inputController.Jumping += OnJumping;
         _inputController.Shooting += OnShooting;
-        _playerHitZone.DamageDetected += OnHurt;
+        _hitZone.DamageDetected += OnHurt;
     }
 
     private void OnDisable()
@@ -35,10 +35,10 @@ public class PlayerAnimator : MonoBehaviour
         _inputController.Ducking -= OnDucking;
         _inputController.Jumping -= OnJumping;
         _inputController.Shooting -= OnShooting;
-        _playerHitZone.DamageDetected -= OnHurt;
+        _hitZone.DamageDetected -= OnHurt;
     }
 
-    private void OnHurt(int damage = 0)
+    private void OnHurt(float damage = 0)
     {
         _animator.SetTrigger(Hurt);        
     }

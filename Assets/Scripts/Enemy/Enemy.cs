@@ -54,6 +54,11 @@ public class Enemy : MonoBehaviour
             HarassPlayer();
     }
 
+    public void ChangePatrolPoint()
+    {
+        _indexOfPoint = ++_indexOfPoint % _points.Length;
+    }
+
     private void OnFoundTarget(IEnemyTarget target)
     {
         _target = target;
@@ -69,7 +74,7 @@ public class Enemy : MonoBehaviour
     {
         _target = null;
         _isPatrolling = true;
-        
+
         if (_isInZone == false && enabled)
             _coroutine = StartCoroutine(ReturnToPatrolZone());
 
@@ -99,9 +104,6 @@ public class Enemy : MonoBehaviour
 
     private void Patrol()
     {
-        if (transform.position == _points[_indexOfPoint].position)
-            _indexOfPoint = ++_indexOfPoint % _points.Length;
-
         _spriteRenderer.flipX = _points[_indexOfPoint].position.x < transform.position.x ? false : true;
         transform.position = Vector2.MoveTowards(transform.position, _points[_indexOfPoint].position, _speed * Time.deltaTime);
     }
@@ -110,6 +112,6 @@ public class Enemy : MonoBehaviour
     {
         yield return _wait;
 
-        transform.position = _points[_indexOfPoint].position;
+        transform.position = _patrolZoneChecker.PatrolZone;
     }
 }

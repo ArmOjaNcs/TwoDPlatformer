@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private int _damage;
+    [SerializeField] private float _damage;
 
     private Rigidbody2D _rigidbody2D;
     private WaitForSeconds _lifeTime;
@@ -21,9 +21,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out EnemyHitZone hitZone))
+        if(collision.TryGetComponent(out HitZone hitZone) && hitZone.EnemyTarget == null)
         {
-            hitZone.Detected(_damage);
+            hitZone.TakeDamage(_damage);
             Destroy(gameObject);
         }
     }

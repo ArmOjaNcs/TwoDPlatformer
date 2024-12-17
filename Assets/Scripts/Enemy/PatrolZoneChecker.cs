@@ -9,6 +9,8 @@ public class PatrolZoneChecker : MonoBehaviour
 
     public event Action<bool> EnemyInZone;
 
+    public Vector3 PatrolZone => _patrolZone.transform.position;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out PatrolZone patrolZone))

@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Coin : MonoBehaviour
 {
+    private const int Value = 1;
+
     private AudioSource _audioSource;
     private SpriteRenderer _spriteRenderer;
     private WaitForSeconds _wait;
@@ -18,16 +20,22 @@ public class Coin : MonoBehaviour
         _isFirstTouch = true;
     }
 
-    public void GetCollected()
+    public int GetCollected()
     {
-        StartCoroutine(Collecting());
+        if (_isFirstTouch)
+        {
+            StartCoroutine(Collecting());
+            return Value;
+        }
+
+        return 0;
     }
 
     private IEnumerator Collecting()
     {
         if (_isFirstTouch)
         {
-            _isFirstTouch= false;
+            _isFirstTouch = false;
             _audioSource.Play();
             _spriteRenderer.enabled = false;
             yield return _wait;

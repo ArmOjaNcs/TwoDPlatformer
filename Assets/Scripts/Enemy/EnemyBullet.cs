@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyBullet : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private int _damage;
+    [SerializeField] private float _damage;
 
     private WaitForSeconds _lifeTime;
     private Vector2 _direction;
@@ -22,9 +22,9 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerHitZone hitZone))
+        if (collision.TryGetComponent(out HitZone hitZone) && hitZone.EnemyTarget != null)
         {
-            hitZone.Detected(_damage);
+            hitZone.TakeDamage(_damage);
             Destroy(gameObject);
         }
     }
