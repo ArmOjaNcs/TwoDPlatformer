@@ -11,7 +11,7 @@ public class HitZone : MonoBehaviour
     private EnemyTarget _enemyTarget;
 
     public event Action<float> DamageDetected;
-    public event Action<float> MedPackDetected;
+    public event Action<float> HealDetected;
 
     public EnemyTarget EnemyTarget => _enemyTarget;
 
@@ -27,7 +27,7 @@ public class HitZone : MonoBehaviour
     {
         if (collision.TryGetComponent(out MedPack medPack) && _enemyTarget != null)
         {
-            TakeHeal(medPack.GetHealing());
+            HealDetected?.Invoke(medPack.GetHealing());
 
             medPack.PickUp();
         }
@@ -47,9 +47,9 @@ public class HitZone : MonoBehaviour
         }
     }
 
-    private void TakeHeal(float heal)
+    public void TakeHeal(float heal)
     {
-        MedPackDetected?.Invoke(heal);
+       HealDetected?.Invoke(heal);
     }
 
     private IEnumerator WaitAfterHit()

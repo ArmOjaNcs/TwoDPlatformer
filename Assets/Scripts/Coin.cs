@@ -24,6 +24,7 @@ public class Coin : MonoBehaviour
     {
         if (_isFirstTouch)
         {
+            _isFirstTouch = false;
             StartCoroutine(Collecting());
             return Value;
         }
@@ -33,13 +34,9 @@ public class Coin : MonoBehaviour
 
     private IEnumerator Collecting()
     {
-        if (_isFirstTouch)
-        {
-            _isFirstTouch = false;
-            _audioSource.Play();
-            _spriteRenderer.enabled = false;
-            yield return _wait;
-            Destroy(gameObject);
-        }
+        _audioSource.Play();
+        _spriteRenderer.enabled = false;
+        yield return _wait;
+        Destroy(gameObject);
     }
 }

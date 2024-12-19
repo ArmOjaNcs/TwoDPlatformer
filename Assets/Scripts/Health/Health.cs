@@ -19,13 +19,13 @@ public class Health : MonoBehaviour
     private void OnEnable()
     {
         _hitZone.DamageDetected += OnDamageDetected;
-        _hitZone.MedPackDetected += OnMedPackDetected;
+        _hitZone.HealDetected += OnHealDetected;
     }
 
     private void OnDisable()
     {
         _hitZone.DamageDetected -= OnDamageDetected;
-        _hitZone.MedPackDetected -= OnMedPackDetected;
+        _hitZone.HealDetected -= OnHealDetected;
     }
 
     private void OnDamageDetected(float damage)
@@ -41,7 +41,7 @@ public class Health : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void OnMedPackDetected(float heal)
+    private void OnHealDetected(float heal)
     {
         CurrentValue += heal;
 

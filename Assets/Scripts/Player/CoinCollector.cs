@@ -1,16 +1,16 @@
-using TMPro;
+using System;
 using UnityEngine;
 
 public class CoinCollector : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
-    
     private int _coinsValue;
 
-    private void Awake()
+    public event Action<int> CoinsValueChanged;
+
+    private void Start()
     {
         _coinsValue = 0;
-        PrintText();
+        CoinsValueChanged?.Invoke(_coinsValue);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -18,12 +18,7 @@ public class CoinCollector : MonoBehaviour
         if(collision.TryGetComponent(out Coin coin))
         {
             _coinsValue += coin.GetCollected();
-            _text.text = "X " + _coinsValue.ToString();
+            CoinsValueChanged?.Invoke(_coinsValue);
         }
-    }
-
-    private void PrintText()
-    {
-        _text.text = "X " + _coinsValue.ToString();
     }
 }

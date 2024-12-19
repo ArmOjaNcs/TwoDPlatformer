@@ -37,7 +37,7 @@ public class PlayerMover : MonoBehaviour, IEnemyTarget
         _inputController.FallingThroughPlatform -= OnFallingThrough;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Move();
     }
@@ -61,7 +61,7 @@ public class PlayerMover : MonoBehaviour, IEnemyTarget
 
     private void Move()
     {
-        transform.Translate(Vector2.right * _direction * _speed * Time.fixedDeltaTime);
+        transform.Translate(Vector2.right * _direction * _speed * Time.deltaTime);
     }
 
     private IEnumerator FallingDown()
