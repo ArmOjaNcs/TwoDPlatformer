@@ -4,11 +4,10 @@ using UnityEngine;
 public class Shooter : MonoBehaviour
 {
     [SerializeField] private InputController _inputController;
-    [SerializeField] private Bullet _bulletPrefab;
+    [SerializeField] private PlayerBulletsPool _bulletsPool;
     [SerializeField] private Transform[] _shotPoints;
     [SerializeField] private float _delay;
     [SerializeField] private float _force;
-    [SerializeField] private float _bulletLifeTime;
 
     private readonly int _firstPoint = 0;
     private readonly int _secondPoint = 1;
@@ -18,15 +17,13 @@ public class Shooter : MonoBehaviour
     private readonly int _right = 1;
 
     private Transform _currentShotPoint;
-    private WaitForSeconds _lifeTime;
     private AudioSource _audioSource;
     private bool _isShooting;
-    private int _direction;
+    private int _targetDirection;
     private float _currentTime;
 
     private void Awake()
     {
-        _lifeTime = new WaitForSeconds(_bulletLifeTime);
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -46,9 +43,9 @@ public class Shooter : MonoBehaviour
 
         if(_isShooting && _currentTime > _delay)
         {
-            Bullet bullet = Instantiate(_bulletPrefab, _currentShotPoint.position, Quaternion.identity);
-            bullet.Init(_lifeTime);
-            bullet.AddDirectionalForce(_force, _direction);
+            PlayerBullet bullet = _bulletsPool.GetBullet();
+            bullet.SetStartPosition(_currentShotPoint);
+            bullet.AddDirectionalForce(_force, _targetDirection);
             _audioSource.Play();
             _currentTime = 0;
         }
@@ -57,11 +54,11 @@ public class Shooter : MonoBehaviour
     private void OnPerformingShot(ShotData shotInfo)
     {
         _isShooting = shotInfo.IsShooting;
-        _direction = shotInfo.IsRightDirection ? _left : _right;
+        _targetDirection = shotInfo.IsRightDirection ? _left : _right;
 
-        if (_direction > 0)
+        if (_targetDirection > 0)
             _currentShotPoint = shotInfo.IsDucking ? _shotPoints[_thirdPoint] : _shotPoints[_firstPoint];
-        else if (_direction < 0)
+        else if (_targetDirection < 0)
             _currentShotPoint = shotInfo.IsDucking ? _shotPoints[_fourthPoint] : _shotPoints[_secondPoint];
     }
 }

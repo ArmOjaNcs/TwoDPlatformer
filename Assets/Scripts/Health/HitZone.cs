@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider2D))]
 public class HitZone : MonoBehaviour
 {
+    [SerializeField] private Health _health;
+
     private WaitForSeconds _wait;
     private float _time = 1;
     private bool _isCanBeDamaged;
@@ -14,6 +16,7 @@ public class HitZone : MonoBehaviour
     public event Action<float> HealDetected;
 
     public EnemyTarget EnemyTarget => _enemyTarget;
+    public float CurrentHealthValue => _health.CurrentValue;
 
     private void Awake()
     {

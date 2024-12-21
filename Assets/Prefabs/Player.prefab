@@ -44,6 +44,7 @@ Transform:
   - {fileID: 2298507675923171627}
   - {fileID: 1454374054451266442}
   - {fileID: 3607482929419349485}
+  - {fileID: 593540700749713190}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7968341389894905992
@@ -630,7 +631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputController: {fileID: 3340599286692261983}
-  _bulletPrefab: {fileID: 6865383540128101818, guid: 9c712ba95dd7c824eb4f3624cce171db, type: 3}
+  _bulletsPool: {fileID: 4406799704709227239}
   _shotPoints:
   - {fileID: 8286348923375113465}
   - {fileID: 3884877278904107029}
@@ -638,7 +639,6 @@ MonoBehaviour:
   - {fileID: 6380301138059088723}
   _delay: 0.5
   _force: 15
-  _bulletLifeTime: 0.5
 --- !u!82 &2660944013337479534
 AudioSource:
   m_ObjectHideFlags: 0
@@ -875,6 +875,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 3
   _hitZone: {fileID: 305502663170372353}
+--- !u!1 &8382687514085772943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 593540700749713190}
+  - component: {fileID: 4406799704709227239}
+  m_Layer: 0
+  m_Name: PlayerBulletsPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &593540700749713190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8382687514085772943}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.01, y: -0.03, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3126474594318146704}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4406799704709227239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8382687514085772943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91797eead69015f488fcc7b1193b76fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 1735243939444515242, guid: 9c712ba95dd7c824eb4f3624cce171db, type: 3}
+  _poolCapacity: 20
+  _poolMaxSize: 30
+  _bulletLifeTime: 0.5
 --- !u!1 &8741632187185389795
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,10 +19,7 @@ public abstract class HealthSmoothedView : MonoBehaviour
         Health.HealthUpdate -= OnHealthUpdate;
     }
 
-    private protected virtual IEnumerator UpdateView() 
-    {
-        yield return null;
-    }
+    private protected abstract IEnumerator UpdateView(); 
 
     private void OnHealthUpdate()
     {

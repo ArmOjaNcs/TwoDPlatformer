@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class PlayerMover : MonoBehaviour, IEnemyTarget
+public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private InputController _inputController;
     [SerializeField] private float _jumpForce;
@@ -15,6 +15,8 @@ public class PlayerMover : MonoBehaviour, IEnemyTarget
     private WaitForSeconds _wait;
     private CapsuleCollider2D _capsuleCollider;
     private float _direction;
+    
+    public Vector3 Position => transform.position;
 
     private void Awake()
     {
@@ -41,8 +43,6 @@ public class PlayerMover : MonoBehaviour, IEnemyTarget
     {
         Move();
     }
-
-    public Vector3 Position => transform.position;
 
     private void OnMoving(float direction)
     {

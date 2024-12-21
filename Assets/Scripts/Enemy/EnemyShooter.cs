@@ -3,31 +3,31 @@ using UnityEngine;
 [RequireComponent (typeof(AudioSource))]
 public class EnemyShooter : MonoBehaviour
 {
-    [SerializeField] private EnemyBullet _enemyBulletPrefab;
-    [SerializeField] private Enemy _enemy;
+    [SerializeField] private EnemyBulletsPool _bulletsPool;
+    [SerializeField] private DetectionZone _detectionZone;
     [SerializeField] private float _delay;
-    [SerializeField] private float _bulletLifeTime;
+    [SerializeField] private float _bulletSpeed;
 
     private Vector2 _direction;
-    private WaitForSeconds _lifeTime;
     private AudioSource _audioSource;
     private bool _isShooting;
     private float _currentTime;
 
     private void Awake()
     {
-        _lifeTime = new WaitForSeconds(_bulletLifeTime);
         _audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
     {
-        _enemy.PlayerInZone += OnPlayerInZone;
+        _detectionZone.FoundTarget += OnFoundTarget;
+        _detectionZone.LostTarget += OnLostTarget;
     }
 
     private void OnDisable()
     {
-        _enemy.PlayerInZone -= OnPlayerInZone;
+        _detectionZone.FoundTarget -= OnFoundTarget;
+        _detectionZone.LostTarget -= OnLostTarget;
     }
 
     private void Update()
@@ -36,18 +36,24 @@ public class EnemyShooter : MonoBehaviour
 
         if( _isShooting && _currentTime > _delay)
         {
-            EnemyBullet enemyBullet = Instantiate(_enemyBulletPrefab, transform.position, Quaternion.identity);
-            enemyBullet.Init(_lifeTime, _direction);
+            EnemyBullet enemyBullet = _bulletsPool.GetBullet();
+            enemyBullet.SetStartPosition(transform);
+            enemyBullet.SetSpeedAndDirection(_bulletSpeed, _direction);
             _audioSource.Play();
             _currentTime = 0;
         }
     }
 
-    private void OnPlayerInZone(bool isShooting, IEnemyTarget target)
+    private void OnFoundTarget(Vector3 target)
     {
-        _isShooting = isShooting;
+        _isShooting = true;
 
         if(target != null)
-            _direction = (target.Position - transform.position).normalized;
+            _direction = (target - transform.position).normalized;
+    }
+
+    private void OnLostTarget()
+    {
+        _isShooting = false;
     }
 }

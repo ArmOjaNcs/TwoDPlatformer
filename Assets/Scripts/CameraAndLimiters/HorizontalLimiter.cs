@@ -8,7 +8,7 @@ public class HorizontalLimiter : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out IEnemyTarget player))
+        if(collision.TryGetComponent(out PlayerMover player))
         {
             float xLimit = transform.position.x - player.Position.x;
             LimitReached?.Invoke(xLimit);
