@@ -51,58 +51,11 @@ public class VampiricAura : MonoBehaviour
 
     private void Update()
     {
-        if (_isActive)
-        {
-            _currentPeriodicTime += Time.deltaTime;
-            _isCanActivate = false;
-            _currentActiveTime += Time.deltaTime;
+        StartActiveTime(_isActive);
 
-            if (_currentActiveTime > ActiveTime)
-            {
-                _isActive = false;
-                _currentActiveTime = 0;
-                _currentPeriodicTime = 0;
-                AuraEnabled?.Invoke(_isActive);
-            }
-        }
-        else if (_isActive == false)
-        {
-            _minDistance = _auraCollider.radius;
-            _auraCollider.enabled = false;
-            _nearestEnemy = null;
-            _enemies.Clear();
-            _currentReloadingTime += Time.deltaTime;
+        StartRealodingTime(_isActive);
 
-            if (_currentReloadingTime > ReloadingTime)
-            {
-                _isCanActivate = true;
-                _currentReloadingTime = 0;
-            }
-        }
-
-        if (_isActive && _currentPeriodicTime >= _periodicTime && _enemies != null)
-        {
-            foreach (IPlayerTarget enemy in _enemies)
-            {
-                if (IsEnemyNearestPosition(enemy))
-                {
-                    _minDistance = transform.position.sqrMagnitude - enemy.Position.sqrMagnitude;
-                    _nearestEnemy = enemy;
-                }
-            }
-
-            if (_nearestEnemy != null && _nearestEnemy.Health != null)
-            {
-                float oldHealthValue = _nearestEnemy.Health.CurrentValue;
-                _nearestEnemy.Health.OnDamageDetected(_damage);
-                float vampiredHealth = oldHealthValue - _nearestEnemy.Health.CurrentValue;
-                _health.TakeHeal(vampiredHealth);
-            }
-
-            _currentPeriodicTime = 0;
-            _minDistance = _auraCollider.radius;
-            _nearestEnemy = null;
-        }
+        ApplyPeriodicDamage();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -133,5 +86,69 @@ public class VampiricAura : MonoBehaviour
             return (transform.position - enemy.Position).sqrMagnitude < _minDistance * _minDistance;
 
         return false;
+    }
+
+    private void StartActiveTime(bool isActive)
+    {
+        if (isActive)
+        {
+            _currentPeriodicTime += Time.deltaTime;
+            _isCanActivate = false;
+            _currentActiveTime += Time.deltaTime;
+
+            if (_currentActiveTime > ActiveTime)
+            {
+                _isActive = false;
+                _currentActiveTime = 0;
+                _currentPeriodicTime = 0;
+                AuraEnabled?.Invoke(_isActive);
+            }
+        }
+    }
+
+    private void StartRealodingTime(bool isActive)
+    {
+        if (isActive == false)
+        {
+            _minDistance = _auraCollider.radius;
+            _auraCollider.enabled = false;
+            _nearestEnemy = null;
+            _enemies.Clear();
+            _currentReloadingTime += Time.deltaTime;
+
+            if (_currentReloadingTime > ReloadingTime)
+            {
+                _isCanActivate = true;
+                _currentReloadingTime = 0;
+            }
+        }
+    }
+
+    private void ApplyPeriodicDamage()
+    {
+        if (_isActive && _currentPeriodicTime >= _periodicTime && _enemies != null)
+        {
+            foreach (IPlayerTarget enemy in _enemies)
+            {
+                if (IsEnemyNearestPosition(enemy))
+                {
+                    _minDistance = transform.position.sqrMagnitude - enemy.Position.sqrMagnitude;
+                    _minDistance = _minDistance * _minDistance;
+                    _nearestEnemy = enemy;
+                }
+            }
+
+            if (_nearestEnemy != null && _nearestEnemy.Health != null)
+            {
+                float oldHealthValue = _nearestEnemy.Health.CurrentValue;
+                _nearestEnemy.Health.OnDamageDetected(_damage);
+                float vampiredHealth = oldHealthValue - _nearestEnemy.Health.CurrentValue;
+                _health.TakeHeal(vampiredHealth);
+            }
+
+            _currentPeriodicTime = 0;
+            _minDistance = _auraCollider.radius;
+            _nearestEnemy = null;
+        }
     }
 }
