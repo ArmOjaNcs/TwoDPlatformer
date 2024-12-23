@@ -101,6 +101,7 @@ public class VampiricAura : MonoBehaviour
 
             _currentPeriodicTime = 0;
             _minDistance = _auraCollider.radius;
+            _nearestEnemy = null;
         }
     }
 
