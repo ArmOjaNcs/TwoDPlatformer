@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent (typeof(AudioSource))]
-public class EnemyShooter : MonoBehaviour
+public class EnemyShooter : MonoBehaviour, IDetectionZoneListener
 {
     [SerializeField] private EnemyBulletsPool _bulletsPool;
     [SerializeField] private DetectionZone _detectionZone;
@@ -10,6 +10,7 @@ public class EnemyShooter : MonoBehaviour
 
     private Vector2 _direction;
     private AudioSource _audioSource;
+    private IEnemyTarget _playerTarget;
     private bool _isShooting;
     private float _currentTime;
 
@@ -20,13 +21,15 @@ public class EnemyShooter : MonoBehaviour
 
     private void OnEnable()
     {
-        _detectionZone.FoundTarget += OnFoundTarget;
+        _detectionZone.PlayerFounded += OnPlayerFounded;
+        _detectionZone.TargetInZone += OnTargetInZone;
         _detectionZone.LostTarget += OnLostTarget;
     }
 
     private void OnDisable()
     {
-        _detectionZone.FoundTarget -= OnFoundTarget;
+        _detectionZone.PlayerFounded -= OnPlayerFounded;
+        _detectionZone.TargetInZone -= OnTargetInZone;
         _detectionZone.LostTarget -= OnLostTarget;
     }
 
@@ -36,23 +39,29 @@ public class EnemyShooter : MonoBehaviour
 
         if( _isShooting && _currentTime > _delay)
         {
-            EnemyBullet enemyBullet = _bulletsPool.GetBullet();
-            enemyBullet.SetStartPosition(transform);
-            enemyBullet.SetSpeedAndDirection(_bulletSpeed, _direction);
-            _audioSource.Play();
-            _currentTime = 0;
+            if (_playerTarget != null)
+            {
+                _direction = (_playerTarget.Position - transform.position).normalized;
+                EnemyBullet enemyBullet = _bulletsPool.GetBullet();
+                enemyBullet.SetStartPosition(transform);
+                enemyBullet.SetSpeedAndDirection(_bulletSpeed, _direction);
+                _audioSource.Play();
+                _currentTime = 0;
+            }
         }
     }
 
-    private void OnFoundTarget(Vector3 target)
+    public void OnPlayerFounded(IEnemyTarget player)
     {
-        _isShooting = true;
-
-        if(target != null)
-            _direction = (target - transform.position).normalized;
+        _playerTarget = player;
     }
 
-    private void OnLostTarget()
+    public void OnTargetInZone()
+    {
+        _isShooting = true;
+    }
+
+    public void OnLostTarget()
     {
         _isShooting = false;
     }

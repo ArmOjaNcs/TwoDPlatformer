@@ -6,7 +6,7 @@ using UnityEngine;
 public class VampiricAura : MonoBehaviour
 {
     [SerializeField] private float _damage;
-    [SerializeField] private HitZone _hitZone;
+    [SerializeField] private Health _health;
     [SerializeField] private InputController _inputController;
 
     public readonly float ActiveTime = 6;
@@ -19,9 +19,8 @@ public class VampiricAura : MonoBehaviour
     private float _currentActiveTime;
     private float _currentReloadingTime;
     private float _currentPeriodicTime;
-    private List<EnemyMover> _enemies;
-    private EnemyMover _nearestEnemy;
-    private HitZone _enemyHitZone;
+    private List<IPlayerTarget> _enemies;
+    private IPlayerTarget _nearestEnemy;
     private bool _isActive;
     private bool _isCanActivate;
 
@@ -46,13 +45,15 @@ public class VampiricAura : MonoBehaviour
     {
         _isCanActivate = true;
         _minDistance = _auraCollider.radius;
-        _enemies = new List<EnemyMover>();
+        _auraCollider.enabled = false;
+        _enemies = new List<IPlayerTarget>();
     }
 
     private void Update()
     {
         if (_isActive)
         {
+            _currentPeriodicTime += Time.deltaTime;
             _isCanActivate = false;
             _currentActiveTime += Time.deltaTime;
 
@@ -60,14 +61,15 @@ public class VampiricAura : MonoBehaviour
             {
                 _isActive = false;
                 _currentActiveTime = 0;
+                _currentPeriodicTime = 0;
                 AuraEnabled?.Invoke(_isActive);
             }
         }
         else if (_isActive == false)
         {
             _minDistance = _auraCollider.radius;
+            _auraCollider.enabled = false;
             _nearestEnemy = null;
-            _enemyHitZone = null;
             _enemies.Clear();
             _currentReloadingTime += Time.deltaTime;
 
@@ -77,54 +79,40 @@ public class VampiricAura : MonoBehaviour
                 _currentReloadingTime = 0;
             }
         }
+
+        if (_isActive && _currentPeriodicTime >= _periodicTime && _enemies != null)
+        {
+            foreach (IPlayerTarget enemy in _enemies)
+            {
+                if (IsEnemyNearestPosition(enemy))
+                {
+                    _minDistance = transform.position.sqrMagnitude - enemy.Position.sqrMagnitude;
+                    _nearestEnemy = enemy;
+                }
+            }
+
+            if (_nearestEnemy != null && _nearestEnemy.Health != null)
+            {
+                float oldHealthValue = _nearestEnemy.Health.CurrentValue;
+                _nearestEnemy.Health.OnDamageDetected(_damage);
+                float vampiredHealth = oldHealthValue - _nearestEnemy.Health.CurrentValue;
+                _health.TakeHeal(vampiredHealth);
+            }
+
+            _currentPeriodicTime = 0;
+            _minDistance = _auraCollider.radius;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out EnemyMover enemy) && _isActive)
+        if (collision.TryGetComponent(out IPlayerTarget enemy))
             _enemies.Add(enemy);
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent(out EnemyMover enemy) && _isActive)
-        {
-            if (_enemies.Contains(enemy) == false)
-                _enemies.Add(enemy);
-
-            foreach (EnemyMover enemyMover in _enemies)
-            {
-                if (CheckForNearestPosition(enemyMover))
-                {
-                    _minDistance = transform.position.sqrMagnitude - enemyMover.transform.position.sqrMagnitude;
-                    _nearestEnemy = enemyMover;
-                }
-            }
-
-            _minDistance = _auraCollider.radius;
-
-            if (_nearestEnemy != null)
-                _enemyHitZone = _nearestEnemy.transform.GetComponentInChildren<HitZone>();
-
-            if (_enemyHitZone != null)
-            {
-                _currentPeriodicTime += Time.deltaTime;
-
-                if (_currentPeriodicTime >= _periodicTime)
-                {
-                    float oldHealthValue = _enemyHitZone.CurrentHealthValue;
-                    _enemyHitZone.TakeDamage(_damage);
-                    float vampiredHealth = oldHealthValue -_enemyHitZone.CurrentHealthValue;
-                    _hitZone.TakeHeal(vampiredHealth);
-                    _currentPeriodicTime = 0;
-                }
-            }
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out EnemyMover enemy) && _isActive)
+        if (collision.TryGetComponent(out IPlayerTarget enemy))
             _enemies.Remove(enemy);
     }
 
@@ -133,14 +121,15 @@ public class VampiricAura : MonoBehaviour
         if (_isCanActivate)
         {
             _isActive = true;
+            _auraCollider.enabled = true; 
             AuraEnabled?.Invoke(_isActive);
         }
     }
 
-    private bool CheckForNearestPosition(EnemyMover enemy)
+    private bool IsEnemyNearestPosition(IPlayerTarget enemy)
     {
-        if(enemy != null)
-            return (transform.position - enemy.transform.position).sqrMagnitude < _minDistance * _minDistance;
+        if (enemy != null)
+            return (transform.position - enemy.Position).sqrMagnitude < _minDistance * _minDistance;
 
         return false;
     }

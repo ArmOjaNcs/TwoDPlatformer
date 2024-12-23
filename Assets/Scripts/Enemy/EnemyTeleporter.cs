@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyTeleporter : MonoBehaviour
+public class EnemyTeleporter : MonoBehaviour, IDetectionZoneListener
 {
     [SerializeField] private DetectionZone _detectionZone;
     [SerializeField] private PatrolZoneChecker _patrolZoneChecker;
@@ -19,19 +19,21 @@ public class EnemyTeleporter : MonoBehaviour
 
     private void OnEnable()
     {
-        _detectionZone.FoundTarget += OnFoundTarget;
+        _detectionZone.TargetInZone += OnTargetInZone;
         _detectionZone.LostTarget += OnLostTarget;
         _patrolZoneChecker.EnemyInZone += OnEnemyInZone;
     }
 
     private void OnDisable()
     {
-        _detectionZone.FoundTarget -= OnFoundTarget;
+        _detectionZone.TargetInZone -= OnTargetInZone;
         _detectionZone.LostTarget -= OnLostTarget;
         _patrolZoneChecker.EnemyInZone -= OnEnemyInZone;
     }
 
-    private void OnFoundTarget(Vector3 target)
+    public void OnPlayerFounded(IEnemyTarget player) { }
+
+    public void OnTargetInZone()
     {
         if (_coroutine != null)
         {
@@ -40,7 +42,7 @@ public class EnemyTeleporter : MonoBehaviour
         }
     }
 
-    private void OnLostTarget()
+    public void OnLostTarget()
     {
         if (_isInZone == false && gameObject != null && _coroutine == null)
             _coroutine = StartCoroutine(ReturnToPatrolZone());

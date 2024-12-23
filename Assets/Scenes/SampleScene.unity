@@ -20938,6 +20938,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1.6089529}
   m_EdgeRadius: 0
+--- !u!1 &1503565531 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3016798566177112501, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
+  m_PrefabInstance: {fileID: 5454420430327772597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1511485041
 GameObject:
   m_ObjectHideFlags: 0
@@ -25427,7 +25432,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8931013233044282377, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
   m_PrefabInstance: {fileID: 5454420430327772597}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1503565531}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9bb174681e9470418194d5f58dd630e, type: 3}
@@ -25438,10 +25443,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8098101085778192204, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
   m_PrefabInstance: {fileID: 5454420430327772597}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1503565531}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16e757f8214b3b94281e344604a7ad68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2926739936763285465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503565531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3f9cbdf6f258a446a7fce75ee5ccf86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3030749901447113366
@@ -25647,6 +25664,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4486802192947604066, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
+      propertyPath: _health
+      value: 
+      objectReference: {fileID: 2926739936763285457}
+    - target: {fileID: 4486802192947604066, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
       propertyPath: _inputController
       value: 
       objectReference: {fileID: 1095956901}
@@ -25666,6 +25687,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3016798566177112501, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2926739936763285465}
     - targetCorrespondingSourceObject: {fileID: 7728914678368123973, guid: f6ecb1fab9d96154cba0b7cf7e6c572f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1700707555}

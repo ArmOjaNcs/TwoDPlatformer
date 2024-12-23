@@ -26,7 +26,7 @@ public abstract class VampiricSmoothedView : MonoBehaviour
         ReloadingSmoothDuration = VampiricAura.ReloadingTime;
     }
 
-    private protected abstract IEnumerator UpdateView(float startValue, float endValue, float smoothDuration, float sign = 0);
+    private protected abstract IEnumerator UpdateView(float startValue, float endValue, float smoothDuration, int sign = 0);
 
     private protected virtual void OnAuraEnabled(bool isActive)
     {

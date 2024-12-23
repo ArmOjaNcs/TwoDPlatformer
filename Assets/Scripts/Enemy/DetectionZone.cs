@@ -3,13 +3,27 @@ using UnityEngine;
 
 public class DetectionZone : MonoBehaviour
 {
-    public event Action<Vector3> FoundTarget;
+    private bool _isPlayerFounded;
+
+    public event Action<IEnemyTarget> PlayerFounded;
+    public event Action TargetInZone;
     public event Action LostTarget;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Start()
     {
-        if (collision.TryGetComponent(out PlayerMover player))
-            FoundTarget?.Invoke(player.Position);
+        _isPlayerFounded = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.TryGetComponent(out IEnemyTarget player) && _isPlayerFounded == false)
+        {
+            _isPlayerFounded = true;
+            PlayerFounded?.Invoke(player);
+        }
+
+        if (collision.TryGetComponent(out IEnemyTarget _))
+            TargetInZone?.Invoke();
     }
 
     private void OnTriggerExit2D(Collider2D collision)

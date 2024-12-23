@@ -8,7 +8,7 @@ public class VerticalLimiter : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerMover player))
+        if (collision.TryGetComponent(out IEnemyTarget player))
         {
             float yLimit = transform.position.y - player.Position.y;
             LimitReached?.Invoke(yLimit);

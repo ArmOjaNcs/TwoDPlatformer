@@ -22,14 +22,16 @@ public class Coin : MonoBehaviour
 
     public int GetCollected()
     {
+        int coinValue = 0;
+
         if (_isFirstTouch)
         {
             _isFirstTouch = false;
             StartCoroutine(Collecting());
-            return Value;
+            coinValue = Value;
         }
 
-        return 0;
+        return coinValue;
     }
 
     private IEnumerator Collecting()

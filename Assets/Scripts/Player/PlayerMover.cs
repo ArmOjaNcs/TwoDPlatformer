@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class PlayerMover : MonoBehaviour
+public class PlayerMover : MonoBehaviour, IEnemyTarget
 {
     [SerializeField] private InputController _inputController;
     [SerializeField] private float _jumpForce;

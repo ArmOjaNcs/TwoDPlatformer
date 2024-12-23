@@ -13,7 +13,7 @@ public class VampiricSmoothedBar : VampiricSmoothedView
         _slider.value = ActiveSmoothDuration / ActiveSmoothDuration;
     }
 
-    private protected override IEnumerator UpdateView(float startValue, float endValue, float smoothDuration, float sign = 0)
+    private protected override IEnumerator UpdateView(float startValue, float endValue, float smoothDuration, int sign = 0)
     {
         float elapsedTime = 0;
         

@@ -23,23 +23,28 @@ public class MedPack : MonoBehaviour
 
     public float GetHealing()
     {
-        return _healingPower;
+        float heal = 0;
+
+        if (_isFirstTouch)
+        {
+            _isFirstTouch = false;
+            PickUp();
+            heal = _healingPower;
+        }
+
+        return heal;
     }
 
-    public void PickUp()
+    private void PickUp()
     {
         StartCoroutine(PickingUp());
     }
 
     private IEnumerator PickingUp()
     {
-        if (_isFirstTouch)
-        {
-            _isFirstTouch = false;
-            _audioSource.Play();
-            _spriteRenderer.enabled = false;
-            yield return _wait;
-            Destroy(gameObject);
-        }
+        _audioSource.Play();
+        _spriteRenderer.enabled = false;
+        yield return _wait;
+        Destroy(gameObject);
     }
 }

@@ -7,8 +7,8 @@ public class VampiricAuraSmoothedText : VampiricSmoothedView
     [SerializeField] private TextMeshProUGUI _text;
 
     private readonly string _readyToStart = "Vampiric aura is ready";
-    private readonly float _minusSign = -1; 
-    private readonly float _plusSign = 1; 
+    private readonly int _minusSign = -1;
+    private readonly int _plusSign = 1;
 
     private protected override void Start()
     {
@@ -17,7 +17,7 @@ public class VampiricAuraSmoothedText : VampiricSmoothedView
         _text.text = _readyToStart;
     }
 
-    private protected override IEnumerator UpdateView(float startValue, float endValue, float smoothDuration, float sign = 0)
+    private protected override IEnumerator UpdateView(float startValue, float endValue, float smoothDuration, int sign = 0)
     {
         float elapsedTime = 0;
 

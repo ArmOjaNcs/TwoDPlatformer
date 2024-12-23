@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class EnemyMover : MonoBehaviour
+public class EnemyMover : MonoBehaviour, IDetectionZoneListener, IPlayerTarget
 {
     [SerializeField] private PatrolPoint[] _points;
     [SerializeField] private DetectionZone _detectionZone;
@@ -14,24 +15,30 @@ public class EnemyMover : MonoBehaviour
     private int _direction;
     private int _indexOfPoint;
     private bool _isPatrolling;
-    private Vector3 _playerTarget;
+    private IEnemyTarget _playerTarget;
 
     public event Action<int> DirectionIsChange;
 
+    public Health Health { get; set; }
+    public Vector3 Position => transform.position;
+
     private void Awake()
     {
+        Health = GetComponent<Health>();
         _isPatrolling = true;
     }
 
     private void OnEnable()
     {
-        _detectionZone.FoundTarget += OnFoundTarget;
+        _detectionZone.PlayerFounded += OnPlayerFounded;
+        _detectionZone.TargetInZone += OnTargetInZone;
         _detectionZone.LostTarget += OnLostTarget;
     }
 
     private void OnDisable()
     {
-        _detectionZone.FoundTarget -= OnFoundTarget;
+        _detectionZone.PlayerFounded -= OnPlayerFounded;
+        _detectionZone.TargetInZone -= OnTargetInZone;
         _detectionZone.LostTarget -= OnLostTarget;
     }
 
@@ -53,23 +60,26 @@ public class EnemyMover : MonoBehaviour
         _indexOfPoint = ++_indexOfPoint % _points.Length;
     }
 
-    private void OnFoundTarget(Vector3 target)
+    public void OnPlayerFounded(IEnemyTarget player)
     {
-        _playerTarget = target;
+        _playerTarget = player;
+    }
+
+    public void OnTargetInZone()
+    {
         _isPatrolling = false;
     }
 
-    private void OnLostTarget()
+    public void OnLostTarget()
     {
-        _playerTarget = Vector3.zero;
         _isPatrolling = true;
     }
 
     private void HarassPlayer()
     {
-        if (_playerTarget != Vector3.zero)
+        if (_playerTarget != null)
         {
-            _direction = _playerTarget.x < transform.position.x ? _left : _right;
+            _direction = _playerTarget.Position.x < transform.position.x ? _left : _right;
             DirectionIsChange?.Invoke(_direction);
             transform.Translate(Vector2.right * _direction * _speed * Time.deltaTime);
         }
@@ -77,8 +87,8 @@ public class EnemyMover : MonoBehaviour
 
     private void Patrol()
     {
-        _direction = _points[_indexOfPoint].Position.x < transform.position.x ? _left : _right;
+        _direction = _points[_indexOfPoint].transform.position.x < transform.position.x ? _left : _right;
         DirectionIsChange?.Invoke(_direction);
-        transform.position = Vector2.MoveTowards(transform.position, _points[_indexOfPoint].Position, _speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, _points[_indexOfPoint].transform.position, _speed * Time.deltaTime);
     }
 }
