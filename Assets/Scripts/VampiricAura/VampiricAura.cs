@@ -133,7 +133,6 @@ public class VampiricAura : MonoBehaviour
                 if (IsEnemyNearestPosition(enemy))
                 {
                     _minDistance = transform.position.sqrMagnitude - enemy.Position.sqrMagnitude;
-                    _minDistance = _minDistance * _minDistance;
                     _nearestEnemy = enemy;
                 }
             }
