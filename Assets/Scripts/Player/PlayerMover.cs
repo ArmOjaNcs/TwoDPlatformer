@@ -18,6 +18,8 @@ public class PlayerMover : MonoBehaviour, IEnemyTarget
     
     public Vector3 Position => transform.position;
 
+    public PlayerMover Player => this;
+
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();

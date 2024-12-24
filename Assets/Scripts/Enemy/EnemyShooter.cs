@@ -39,7 +39,7 @@ public class EnemyShooter : MonoBehaviour, IDetectionZoneListener
 
         if( _isShooting && _currentTime > _delay)
         {
-            if (_playerTarget != null)
+            if (_playerTarget != null && _playerTarget.Player != null)
             {
                 _direction = (_playerTarget.Position - transform.position).normalized;
                 EnemyBullet enemyBullet = _bulletsPool.GetBullet();

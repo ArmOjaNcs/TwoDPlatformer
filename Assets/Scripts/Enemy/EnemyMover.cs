@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class EnemyMover : MonoBehaviour, IDetectionZoneListener, IPlayerTarget
 {
@@ -8,6 +7,7 @@ public class EnemyMover : MonoBehaviour, IDetectionZoneListener, IPlayerTarget
     [SerializeField] private DetectionZone _detectionZone;
     [SerializeField] private float _speed;
     [SerializeField, Range(0, 1)] private int _startIndexOfPoints;
+    [SerializeField] private EnemyTeleporter _teleporter;
 
     private readonly int _left = -1;
     private readonly int _right = 1;
@@ -32,14 +32,14 @@ public class EnemyMover : MonoBehaviour, IDetectionZoneListener, IPlayerTarget
     {
         _detectionZone.PlayerFounded += OnPlayerFounded;
         _detectionZone.TargetInZone += OnTargetInZone;
-        _detectionZone.LostTarget += OnLostTarget;
+        _teleporter.ReturnedToPatrolZone += OnLostTarget;
     }
 
     private void OnDisable()
     {
         _detectionZone.PlayerFounded -= OnPlayerFounded;
         _detectionZone.TargetInZone -= OnTargetInZone;
-        _detectionZone.LostTarget -= OnLostTarget;
+        _teleporter.ReturnedToPatrolZone -= OnLostTarget;
     }
 
     private void Start()
@@ -70,14 +70,14 @@ public class EnemyMover : MonoBehaviour, IDetectionZoneListener, IPlayerTarget
         _isPatrolling = false;
     }
 
-    public void OnLostTarget()
+    public void OnLostTarget() 
     {
         _isPatrolling = true;
     }
 
     private void HarassPlayer()
     {
-        if (_playerTarget != null)
+        if (_playerTarget != null && _playerTarget.Player != null)
         {
             _direction = _playerTarget.Position.x < transform.position.x ? _left : _right;
             DirectionIsChange?.Invoke(_direction);

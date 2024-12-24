@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class EnemyTeleporter : MonoBehaviour, IDetectionZoneListener
     private WaitForSeconds _wait;
     private Coroutine _coroutine;
     private bool _isInZone;
+
+    public event Action ReturnedToPatrolZone;
 
     private void Awake()
     {
@@ -67,5 +70,6 @@ public class EnemyTeleporter : MonoBehaviour, IDetectionZoneListener
         yield return _wait;
 
         transform.position = _patrolZoneChecker.PatrolZone;
+        ReturnedToPatrolZone?.Invoke();
     }
 }

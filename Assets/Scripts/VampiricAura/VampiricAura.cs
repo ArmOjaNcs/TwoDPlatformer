@@ -12,7 +12,7 @@ public class VampiricAura : MonoBehaviour
     public readonly float ActiveTime = 6;
     public readonly float ReloadingTime = 4;
 
-    private readonly float _periodicTime = 0.5f;
+    private readonly float _periodicTime = 0.3f;
 
     private CircleCollider2D _auraCollider;
     private float _minDistance;

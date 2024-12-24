@@ -7,6 +7,7 @@ public class VampiricAuraSmoothedText : VampiricSmoothedView
     [SerializeField] private TextMeshProUGUI _text;
 
     private readonly string _readyToStart = "Vampiric aura is ready";
+    private readonly string _zero = "0";
     private readonly int _minusSign = -1;
     private readonly int _plusSign = 1;
 
@@ -25,7 +26,11 @@ public class VampiricAuraSmoothedText : VampiricSmoothedView
         {
             elapsedTime += Time.deltaTime;
             float currentValue = startValue + elapsedTime * sign;
-            _text.text = currentValue.ToString("#.##") + "/" + smoothDuration;
+
+            if(currentValue < 1) 
+                _text.text = _zero + currentValue.ToString("#.##") + "/" + smoothDuration;
+            else
+                _text.text = currentValue.ToString("#.##") + "/" + smoothDuration;
 
             yield return null;
         }
